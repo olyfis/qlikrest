@@ -64,7 +64,7 @@ public class DButil {
 
 				//statement.setString(1, dateParam);
 				res = Olyutil.getResultSetPS(statement);		 	 
-				strArr = Olyutil.resultSetArray(res, ";");			
+				strArr = Olyutil.resultSetArray(res, "^");			
 			}		
 		} catch (SQLException se) {
 			se.printStackTrace();
@@ -90,17 +90,20 @@ public class DButil {
 		
 		int k = 0;
 		for (String str : strArr) { // iterating ArrayList
-			JsonObject obj = new JsonObject();
-			String[] items = str.split(";");
 			
-			//System.out.println("strArrSZ=" +  items.length +  " -- Line: " + k +  " -- DATA:" + str + "---");
+			
+			JsonObject obj = new JsonObject();
+			String[] items = str.split("\\^");
+			
+			 //System.out.println("strArrSZ=" +  items.length +  " -- Line: " + k +  " -- DATA:" + str + "---");
 			//System.out.println("hrdArrSZ=" +  hdrArr.size() );
 		
     		for (int i = 0; i < items.length; i++) {
     			obj.addProperty(hdrArr.get(i).trim(), items[i]);
     			//newStrArr.add(items[i]);
-    			//System.out.println(hdrArr.get(i).trim() + "-->" + items[i]);
+    			 //System.out.println(hdrArr.get(i).trim() + "-->" + items[i]);
     		}	
+    		//System.out.println("*****************************************************************************************************************");
     		jsonArr.add(obj);
     		k++;
     		/*

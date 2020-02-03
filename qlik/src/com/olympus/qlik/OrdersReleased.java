@@ -41,10 +41,7 @@ public class OrdersReleased extends HttpServlet {
 	static String s = null;
 	static private PreparedStatement statement;
 	
-
-	
 	/****************************************************************************************************************************************************/
-
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -59,13 +56,13 @@ public class OrdersReleased extends HttpServlet {
 	 
 		sep = ";";
 		String propFile = "C:\\Java_Dev\\props\\Rapport.prop";
-		String sqlFile = "C:\\Java_Dev\\props\\sql\\ordersReleased.sql";	
+		String sqlFile = "C:\\Java_Dev\\props\\sql\\orderReleasedQlikWS\\ordersReleased_qlik.sql";	
 		String logFileName = "ordersReleased.log";
 		String directoryName = "D:/Kettle/logfiles/ordersReleased";
 		Handler fileHandler =  OlyLog.setAppendLog(directoryName, logFileName, logger );
 		String dateFmt = "";
 		//System.out.println("%%%%%%%%%%%%%%%%%%%% in ContractEOT: doGet() ");
-		String headerFile = "C:\\Java_Dev\\props\\headers\\ordersReleasedJhrd.txt";
+		String headerFile = "C:\\Java_Dev\\props\\headers\\QlikRapportHdr_V3.txt";
 		String Jsonfile = "C:\\Java_Dev\\JSON\\ordReleased.json";
  
 		ArrayList<String> headerArr = new ArrayList<String>();
