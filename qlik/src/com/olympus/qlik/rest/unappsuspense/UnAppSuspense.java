@@ -164,7 +164,7 @@ public class UnAppSuspense extends HttpServlet {
 		ArrayList<String> headerArr = new ArrayList<String>();
 		JsonArray jsonArr = new JsonArray();
 		String Jsonfile = "C:\\Java_Dev\\JSON\\unappsuspense\\uaSuspense.json";	
-		String uasFile = "D:\\Kettle\\Production\\unappsuspense\\csvfiles\\uaSuspense.txt";
+		String uasFile = "D:\\Kettle\\Production\\unappsuspense\\csvfiles\\uaSuspense.csv";
 		String headerFile = "C:\\Java_Dev\\props\\headers\\unappsuspense\\uasHdr.txt";
 		headerArr = Olyutil.readInputFile(headerFile);
 		

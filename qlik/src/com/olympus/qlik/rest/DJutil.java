@@ -1,4 +1,4 @@
-package com.olympus.qlik;
+package com.olympus.qlik.rest;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,7 +21,7 @@ import com.google.gson.JsonObject;
 //import org.json.JSONObject;
 import com.olympus.olyutil.Olyutil;
 
-public class DButil {
+public class DJutil {
 	static Statement stmt = null;
 	static Connection con = null;
 	static ResultSet res  = null;
@@ -99,16 +99,17 @@ public class DButil {
 			//System.out.println("hrdArrSZ=" +  hdrArr.size() );
 		
     		for (int i = 0; i < items.length; i++) {
-				
-				//if (k < 1) { System.out.println("i=" + i + "  -- ITEM=" + hdrArr.get(i).trim() + "-- Value=" + items[i]);	}
-    		 
-    			if (i == 2 || i == 16 ||  i == 54 || i == 55  || (i >= 18 && i<=48) ) {
-    				obj.addProperty(hdrArr.get(i).trim(), Olyutil.strToDouble(items[i].replaceAll(",", "").replaceAll("\\$", "")  ));		
+    			//if (k < 1) {
+    				//System.out.println("i=" + i + "  -- ITEM=" + hdrArr.get(i).trim() + "-- Value=" + items[i]);
+    				
+    			//}
+    			if (i == 15 || i == 18 ||  i == 21 || i == 35  || i == 40 ) {
+    				obj.addProperty(hdrArr.get(i).trim(), Olyutil.strToDouble(items[i].replaceAll(",", "").replaceAll("\\$", "")  ));
+    				
+    				
     			} else {
     				obj.addProperty(hdrArr.get(i).trim(), items[i]);
-    			} 
-				 
-    			//obj.addProperty(hdrArr.get(i).trim(), items[i]);
+    			}
     			//newStrArr.add(items[i]);
     			 //System.out.println(hdrArr.get(i).trim() + "-->" + items[i]);
     		}	

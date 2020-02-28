@@ -1,4 +1,4 @@
-package com.olympus.qlik;
+package com.olympus.qlik.rest;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,8 +38,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.olympus.olyutil.Olyutil;
 import com.olympus.olyutil.log.OlyLog;
+ 
 
-@WebServlet("/contractsdb")
+@WebServlet("/cdb")
 public class ContractsDatabase extends HttpServlet {
 
 	private final Logger logger = Logger.getLogger(ContractsDatabase.class.getName()); // define logger
