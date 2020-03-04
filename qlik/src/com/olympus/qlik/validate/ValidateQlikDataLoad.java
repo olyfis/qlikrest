@@ -32,15 +32,17 @@
 	@WebServlet("/valqlik")
 	public class ValidateQlikDataLoad extends HttpServlet {
 		private final Logger logger = Logger.getLogger(ContractsDatabase.class.getName()); // define logger
+		 
 
 		
 		/****************************************************************************************************************************************************/
 
 		/****************************************************************************************************************************************************/
 
+
 		/****************************************************************************************************************************************************/
 		/****************************************************************************************************************************************************/
-		static public HashMap<String, BigDecimal>  parseDataRest(ArrayList<String> strArr, String sep) {
+		static public HashMap<String, BigDecimal>  parseData(ArrayList<String> strArr, String sep ) {
 		    HashMap<String, BigDecimal> map = new HashMap<String, BigDecimal>();
 			//Olyutil.printStrArray(strArr);
 			int k = 0;
@@ -102,12 +104,87 @@
 		    return(total);
 		}
 		/****************************************************************************************************************************************************/
+		public void displayHashMap(HashMap<String, Boolean> mp, String tag)  {
+			
+			Iterator it = mp.entrySet().iterator();
+			String key = "";
+			
+			 while (it.hasNext()) { // Initialize compare hMap
+				 Map.Entry pair = (Map.Entry)it.next();
+				 key = (String) pair.getKey();
+				 System.out.println(tag + key + " = " + pair.getValue());  
+				 /*
+				 if ((boolean) pair.getValue() == false ) {
+					 System.out.println(tag + key + " = " + pair.getValue());  
+				 }
+				 */
+			 }
+		}
+		/****************************************************************************************************************************************************/
+		public void getMissingData(HashMap<String, Boolean> mp,  HashMap<String, BigDecimal> src, String tag, BigDecimal srcTot, BigDecimal tgtTot)  {
+			Iterator it = mp.entrySet().iterator();
+			String key = "";
+			BigDecimal srcValue = new BigDecimal(0);
+			BigDecimal total = new BigDecimal(0);
+			BigDecimal newTotal = new BigDecimal(0);
+			DecimalFormat df = new DecimalFormat("$###,###.##");
+		    
+			 while (it.hasNext()) { // Initialize compare hMap
+				 Map.Entry pair = (Map.Entry)it.next();
+				 key = (String) pair.getKey();
+				 if ((boolean) pair.getValue() == false ) {
+					 if (src.get(key) != null) {
+						 srcValue = src.get(key);
+						 total = total.add(srcValue);
+						 String val = df.format(srcValue);
+						 System.out.println(tag + key + " = " + pair.getValue() + "-- srcValue="  + val );  	 
+					 }	 
+				 }	 
+			 }
+			 String totalVal = df.format(total);
+			 String sTot = df.format(srcTot);
+			 String tTot = df.format(tgtTot);
+			 
+			 newTotal = tgtTot.add(total);
+			 String newTotalVal = df.format(newTotal);
+			 System.out.println("\nTotal of missing data:" + totalVal);
+			 
+			 System.out.println("Total from Source:" + sTot);
+			 System.out.println("Total from target:" + tTot);
+	 
+			 System.out.println("\nTotal of Target data plus missing data:" + newTotalVal);
+		}	
+		/****************************************************************************************************************************************************/
+		public HashMap<String, Boolean> compareSrcTgt(HashMap<String, BigDecimal> src, HashMap<String, BigDecimal> tgt) {
+			HashMap<String, Boolean> cHmap = new HashMap<String, Boolean>();
+			Iterator itSrc = src.entrySet().iterator();
+			String srcKey = "";
+	
+			while (itSrc.hasNext()) { // Initialize compare hMap
+				Map.Entry pair = (Map.Entry) itSrc.next();
+				srcKey = (String) pair.getKey();
+				cHmap.put(srcKey, false);
+				// System.out.println("****srcData: " + srcKey + " = " + pair.getValue());
+			}
+	
+			Iterator itTgt = tgt.entrySet().iterator();
+			String tgtKey = "";
+			while (itTgt.hasNext()) { // find missing contracts
+				Map.Entry pair = (Map.Entry) itTgt.next();
+				tgtKey = (String) pair.getKey();
+				// System.out.println("****tgtData:" + tgtKey + "=" + pair.getValue());
+				cHmap.replace(tgtKey, true);
+			}
+			return (cHmap);
+		}
+		/****************************************************************************************************************************************************/
 
 		@Override
 		protected void doGet(HttpServletRequest request, HttpServletResponse response)
 				throws ServletException, IOException {
 			HashMap<String, BigDecimal> hMapR = new HashMap<String, BigDecimal>();
 			HashMap<String, BigDecimal> hMapQ = new HashMap<String, BigDecimal>();
+			HashMap<String, Boolean> contractHmap = new HashMap<String, Boolean>();
 			
 			String logFileName = "qlikValidate.log";
 			String directoryName = "D:/Kettle/logfiles/qlikValidate";
@@ -126,8 +203,8 @@
 		 
 			
 			//Olyutil.printStrArray(qStrArr);
-			hMapR = parseDataRest(strArr, sep);
-			hMapQ = parseDataRest(qstrArr, sep);
+			hMapR = parseData(strArr, sep);
+			hMapQ = parseData(qstrArr, sep);
 			
 			int sz = hMapR.size();
 			int qsz = hMapQ.size();
@@ -139,9 +216,11 @@
 			String fpQlik = df.format(totalQlik);
 			//System.out.println("Total=" + total + "--");
 			//System.out.println(String.format("%.2f", total));
-			System.out.println("*** Source Data Total (Rest) --> Screen_14_Net_Investment  = " + fpRest + " --> Records processed = " + sz);
-			System.out.println("*** Target Data Total (Qlik) --> Screen_14_Net_Investment  = " + fpQlik + " --> Records processed = " + qsz);
-			
+			System.out.println("*** Source Data Total (Contracts DB Rest) --> Screen_14_Net_Investment  = " + fpRest + " --> Records processed = " + sz);
+			System.out.println("*** Target Data Total (Contracts DB Qlik) --> Screen_14_Net_Investment  = " + fpQlik + " --> Records processed = " + qsz);
+			contractHmap = compareSrcTgt(hMapR, hMapQ); 
+			//displayHashMap(contractHmap, "Contracts: ");
+			getMissingData(contractHmap, hMapR, "Contracts DB -> Missing Contract: ", totalRest, totalQlik );
 		}
 
 	}
