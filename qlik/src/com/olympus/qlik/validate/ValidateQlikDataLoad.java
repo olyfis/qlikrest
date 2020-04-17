@@ -55,8 +55,8 @@
 				//System.out.println("hrdArrSZ=" +  hdrArr.size() );
 				BigDecimal bd = null;
 	    		for (int i = 0; i < items.length; i++) {
-	    			key = items[1];
-	    		 
+	    			key = items[0];
+	    			System.out.println("ID:" + items[0] + "-- Screen14=" + items[i] + "--");
 	    			if (! Olyutil.isNullStr(key)) {
 	    				if (i == 7) {
 	    					if(Olyutil.isNullStr(str)) {

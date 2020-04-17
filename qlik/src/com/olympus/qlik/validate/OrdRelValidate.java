@@ -87,7 +87,7 @@ public class OrdRelValidate extends HttpServlet {
     		for (int i = 0; i < items.length; i++) {
     			key = items[0]; 
     			if (! Olyutil.isNullStr(key)) {
-    				if (i == 4) {
+    				if (i == 1) {
     					if(Olyutil.isNullStr(str)) {
     						  bd = new BigDecimal(0);
     					} else {
@@ -207,7 +207,7 @@ public class OrdRelValidate extends HttpServlet {
 		BigDecimal srcValue = new BigDecimal(0);
 		BigDecimal total = new BigDecimal(0);
 		BigDecimal newTotal = new BigDecimal(0);
-		DecimalFormat df = new DecimalFormat("$###,###.##");
+		DecimalFormat df = new DecimalFormat("$###,##0.00");
 		System.out.println("*** cMapSZ=" + contractHmap.size() );
 		 while (it.hasNext()) { // Initialize compare hMap
 			 Map.Entry pair = (Map.Entry)it.next();
@@ -231,12 +231,16 @@ public class OrdRelValidate extends HttpServlet {
 		 }
 		 
 		 /*
-		 String totalVal = df.format(total);
-		 String sTot = df.format(srcTot);
-		 String tTot = df.format(tgtTot);
+	 
+		 		String totalVal = Olyutil.decimalfmt(total, "$###,##0.00");
+		 		String sTot = Olyutil.decimalfmt(srcTot, "$###,##0.00");
+		 		String tTot = Olyutil.decimalfmt(tgtTot, "$###,##0.00");
 		 
 		 newTotal = tgtTot.add(total);
-		 String newTotalVal = df.format(newTotal);
+		 
+		 String newTotalVal = Olyutil.decimalfmt(newTotal, "$###,##0.00");
+
+		 
 		 System.out.println("\nTotal of missing data:" + totalVal);
 		 
 		 System.out.println("Total from Source:" + sTot);
@@ -246,7 +250,13 @@ public class OrdRelValidate extends HttpServlet {
 		 
 		 */
 	}	
+	/****************************************************************************************************************************************************/
+
+	/****************************************************************************************************************************************************/
+	public void getMissingData2()  {
 		
+	}
+	
 	/****************************************************************************************************************************************************/
 
 	@Override
@@ -254,10 +264,7 @@ public class OrdRelValidate extends HttpServlet {
 			throws ServletException, IOException {
 		HashMap<String, List<OrdReleased>> mapArrR = new HashMap<String, List<OrdReleased>>();
 		HashMap<String, List<OrdReleased>> mapArrQ = new HashMap<String, List<OrdReleased>>();
-		
-		
-		
-		
+
 		List<OrdReleased>  list = null;
 		BigDecimal totalRest = new BigDecimal(0);
 		BigDecimal totalQlik = new BigDecimal(0);
@@ -269,7 +276,7 @@ public class OrdRelValidate extends HttpServlet {
 		String sep = ",";
 		String csvFile = "C:\\Java_Dev\\props\\qlik\\or\\or_rest.csv";
 		String qcsvFile = "C:\\Java_Dev\\props\\qlik\\or\\or_qlik.csv";
-		DecimalFormat df = new DecimalFormat("$###,###.##");
+		//DecimalFormat df = new DecimalFormat("$###,##0.00");
 		
 		ArrayList<String> strArrR = new ArrayList<String>();
 		ArrayList<String> strArrQ = new ArrayList<String>();
@@ -283,17 +290,20 @@ public class OrdRelValidate extends HttpServlet {
 		//System.out.println("*** mapArrR size:" + sz);
 		//displayMapArr(mapArrR);
 		totalRest = sumData(mapArrR, true);
-		String fpRest = df.format(totalRest);
+ 
 		 
 		//displayMapArr(mapArrQ);
 		totalQlik = sumData(mapArrQ, false);
 		 
-		String fpQlik = df.format(totalQlik);
-	
+	 
+		String fpRest = Olyutil.decimalfmt(totalRest, "$###,##0.00");
+		String fpQlik = Olyutil.decimalfmt(totalQlik, "$###,##0.00");
+		
 		System.out.println("*** Source Data Total (Orders Released Rest) --> NetInvoice  = " + fpRest + " --> Records processed = " + srcRecs);
 		System.out.println("*** Target Data Total (Orders Released Qlik) --> NetInvoice  = " + fpQlik + " --> Records processed = " + tgtRecs);
-		
-		getMissingData();
+		srcRecs = 0;
+		tgtRecs = 0;
+		//getMissingData();
 		
 	}
 		

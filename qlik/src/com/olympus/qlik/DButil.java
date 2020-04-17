@@ -82,8 +82,8 @@ public class DButil {
 		}
 		return strArr;
 	}
-	/****************************************************************************************************************************************************/
-	static public JsonArray buildJSON(ArrayList<String> strArr, ArrayList<String> hdrArr) {
+	/** ***************************************************************************************************************************************************/
+	static public JsonArray buildJSON(ArrayList<String> strArr, ArrayList<String> hdrArr) throws IOException {
 		JsonArray jsonArr = new JsonArray();
 		//Olyutil.printStrArray(strArr);
 		 
@@ -96,17 +96,27 @@ public class DButil {
 			String[] items = str.split("\\^");
 			
 			 //System.out.println("strArrSZ=" +  items.length +  " -- Line: " + k +  " -- DATA:" + str + "---");
-			//System.out.println("hrdArrSZ=" +  hdrArr.size() );
+			 //System.out.println("hrdArrSZ=" +  hdrArr.size() );
 		
-    		for (int i = 0; i < items.length; i++) {
-				
-				//if (k < 1) { System.out.println("i=" + i + "  -- ITEM=" + hdrArr.get(i).trim() + "-- Value=" + items[i]);	}
-    		 
-    			if (i == 2 || i == 16 ||  i == 54 || i == 55  || (i >= 18 && i<=48) ) {
-    				obj.addProperty(hdrArr.get(i).trim(), Olyutil.strToDouble(items[i].replaceAll(",", "").replaceAll("\\$", "")  ));		
-    			} else {
-    				obj.addProperty(hdrArr.get(i).trim(), items[i]);
-    			} 
+			for (int i = 0; i < items.length; i++) {
+
+				if (i == 2 || i == 16 || i == 55 || i == 56 || i == 75 || (i >= 18 && i <= 49)) {
+					obj.addProperty(hdrArr.get(i).trim(),
+							Olyutil.strToDouble(items[i].replaceAll(",", "").replaceAll("\\$", "")));
+
+				} else {
+					if ((i == 3 || i == 59 || i == 60 || i == 74 || i == 77) && (!Olyutil.isNullStr(items[i]))) {
+						obj.addProperty(hdrArr.get(i).trim(),
+								Olyutil.formatDate(items[i], "yyyy-MM-dd hh:mm:ss.SSS", "yyyy-MM-dd"));
+					} else {
+						obj.addProperty(hdrArr.get(i).trim(), items[i]);
+					}
+
+					/*if (k < 1) {
+						 System.out.println("i=" + i + "  -- ITEM=" + hdrArr.get(i).trim() + "-- Value=" + items[i]);		
+					} */
+
+				}
 				 
     			//obj.addProperty(hdrArr.get(i).trim(), items[i]);
     			//newStrArr.add(items[i]);
