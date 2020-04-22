@@ -1,25 +1,18 @@
-package com.olympus.qlik;
+package com.olympus.qlik.ws;
 /*
  * DESC: Web Service for Qlik Data Universe
- * DATE: 2020-04-17
- * VERS: 1.5
- * http://cvyhj3a27:8181/qlik/ordreleased
+ * DATE: 2020-04-21
+ * VERS: 1.0
+ * http://cvyhj3a27:8181/qlik/initjson
  */
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Properties;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
@@ -34,10 +27,10 @@ import org.w3c.dom.NodeList;
 import com.google.gson.JsonArray;
 import com.olympus.olyutil.Olyutil;
 import com.olympus.olyutil.log.OlyLog;
-import javax.servlet.http.HttpServlet;
-
-@WebServlet("/ordreleased")
-public class OrdersReleased extends HttpServlet {
+import com.olympus.qlik.DButil;
+import com.olympus.qlik.OrdersReleased;
+@WebServlet("/initjson")
+public class InitJson extends HttpServlet {
 	private final Logger logger = Logger.getLogger(OrdersReleased.class.getName()); // define logger
 	static Statement stmt = null;
 	static Connection con = null;

@@ -1,11 +1,4 @@
-package com.olympus.qlik;
-
-/*
- * DESC: Web Service for Qlik Data Universe
- * DATE: 2020-04-17
- * VERS: 1.5
- *  http://cvyhj3a27:8181/qlik/ordreleased
- */
+package com.olympus.qlik.ws;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,14 +13,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
-import org.json.JSONArray;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-//import org.json.JSONObject;
 import com.olympus.olyutil.Olyutil;
 
-public class DButil {
+public class JsonWriter {
 	static Statement stmt = null;
 	static Connection con = null;
 	static ResultSet res  = null;
@@ -89,22 +79,21 @@ public class DButil {
 		}
 		return strArr;
 	}
-	/** ***************************************************************************************************************************************************/
+	/*****************************************************************************************************************************************************/
 	static public JsonArray buildJSON(ArrayList<String> strArr, ArrayList<String> hdrArr) throws IOException {
 		JsonArray jsonArr = new JsonArray();
-		//Olyutil.printStrArray(strArr);
-		 
-		
+		// Olyutil.printStrArray(strArr);
+
 		int k = 0;
 		for (String str : strArr) { // iterating ArrayList
-			
-			
+
 			JsonObject obj = new JsonObject();
 			String[] items = str.split("\\^");
-			
-			 //System.out.println("strArrSZ=" +  items.length +  " -- Line: " + k +  " -- DATA:" + str + "---");
-			 //System.out.println("hrdArrSZ=" +  hdrArr.size() );
-		
+
+			// System.out.println("strArrSZ=" + items.length + " -- Line: " + k + " --
+			// DATA:" + str + "---");
+			// System.out.println("hrdArrSZ=" + hdrArr.size() );
+
 			for (int i = 0; i < items.length; i++) {
 
 				if (i == 2 || i == 16 || i == 55 || i == 56 || i == 75 || (i >= 18 && i <= 49)) {
@@ -119,29 +108,28 @@ public class DButil {
 						obj.addProperty(hdrArr.get(i).trim(), items[i]);
 					}
 
-					/*if (k < 1) {
-						 System.out.println("i=" + i + "  -- ITEM=" + hdrArr.get(i).trim() + "-- Value=" + items[i]);		
-					} */
+					/*
+					 * if (k < 1) { System.out.println("i=" + i + "  -- ITEM=" +
+					 * hdrArr.get(i).trim() + "-- Value=" + items[i]); }
+					 */
 
 				}
-				 
-    			//obj.addProperty(hdrArr.get(i).trim(), items[i]);
-    			//newStrArr.add(items[i]);
-    			 //System.out.println(hdrArr.get(i).trim() + "-->" + items[i]);
-    		}	
-    		//System.out.println("*****************************************************************************************************************");
-    		jsonArr.add(obj);
-    		k++;
-    		/*
-    		if (k > 0) {
-    			return;
-    		}
-    		*/
+
+				// obj.addProperty(hdrArr.get(i).trim(), items[i]);
+				// newStrArr.add(items[i]);
+				// System.out.println(hdrArr.get(i).trim() + "-->" + items[i]);
+			}
+			// System.out.println("*****************************************************************************************************************");
+			jsonArr.add(obj);
+			k++;
+			/*
+			 * if (k > 0) { return; }
+			 */
 		}
-		
-		return(jsonArr);
+
+		return (jsonArr);
 	}
-	
+
 	/****************************************************************************************************************************************************/
 
 }
