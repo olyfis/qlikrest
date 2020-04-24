@@ -2,7 +2,7 @@ package com.olympus.qlik;
 /*
  * DESC: Web Service for Qlik Data Universe
  * DATE: 2020-04-17
- * VERS: 1.5
+ * VERS: 1.5a
  * http://cvyhj3a27:8181/qlik/ordreleased
  */
 import java.io.BufferedReader;
@@ -61,7 +61,7 @@ public class OrdersReleased extends HttpServlet {
 	 
 		sep = ";";
 		String propFile = "C:\\Java_Dev\\props\\Rapport.prop";
-		String sqlFile = "C:\\Java_Dev\\props\\sql\\orderReleasedQlikWS\\Qlik_Rapport_OrdRel_V5.sql";	
+		String sqlFile = "C:\\Java_Dev\\props\\sql\\orderReleasedQlikWS\\Qlik_Rapport_OrdRel_V5b.sql";	
 		String logFileName = "ordersReleased.log";
 		String directoryName = "D:/Kettle/logfiles/ordersReleased";
 		Handler fileHandler =  OlyLog.setAppendLog(directoryName, logFileName, logger );
